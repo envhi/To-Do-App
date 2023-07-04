@@ -1,0 +1,20 @@
+.searchbar-container {
+  width: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: rgba(237, 237, 237, 0.986);
+  padding: 20px;
+  margin-bottom: 5px;
+}
+
+.searchbar-container input {
+  width: 400px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.1);
+}
