@@ -13,5 +13,10 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000'}))
 app.use("/todos", todoRoutes);
 
 app.listen(port, () => {
+
+
+
+
+  
   console.log(`backend started on port ${port}`);
 });

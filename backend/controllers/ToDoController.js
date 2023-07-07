@@ -1,3 +1,5 @@
+const ToDoService = require("../services/ToDoServices");
+
 // check id method import
 const { ObjectId } = require("mongodb");
 
@@ -5,118 +7,85 @@ const { ObjectId } = require("mongodb");
 const ToDo = require("../models/ToDo");
 
 module.exports = class ToDoController {
-
+  // GET
+  // get all todos from db
   static async getAllToDos(req, res) {
+    const alltodos = await ToDoService.getAllToDos();
 
-    const alltodos = await ToDo.find()
-
-    res.status(200).json(alltodos)
-
+    res.status(200).json(alltodos);
   }
 
+  // GET
+  // get one to do from db by the parameter id
   static async getToDoById(req, res) {
     const id = req.params.id;
 
-    // check if the id parameter from the URL is valid
-    if (!ObjectId.isValid(id)) {
-      res.status(404).json({ message: "id is not a valid hex" });
-      return;
-    }
-
-    // check if todo exists by id
-    const todo = await ToDo.findOne({ _id: id });
-
-    if (!todo) {
-      res.status(404).json({ message: "there is no to-do with this id" });
-    }
-
-    res.status(200).json({ todo });
-  }
-
-  static async addToDo(req, res) {
-    const { todotitle, todocategory } = req.body;
-    const active = true;
-
-    if (!todotitle) {
-      res.status(422).json({ Message: "todo title is mandatory!" });
-      return;
-    }
-
-    if (!todocategory) {
-      res.status(422).json({ Message: "todo test key is mandatory!" });
-      return;
-    }
-
-    // create a todo
-    const todo = new ToDo({
-      todotitle,
-      todocategory,
-      active,
-    });
     try {
-      const newToDo = await todo.save();
+      const todo = await ToDoService.getToDoById(id);
 
-      res.status(201).json({
-        message: `to-do created! to-do name: ${todo.todotitle}`,
-        newToDo,
-      });
-    } catch (err) {
+      if (!todo) {
+        res.status(404).json({ message: "There is no to-do with this id" });
+        return;
+      }
+
+      res.status(200).json(todo);
+    } catch (error) {
       res.status(500).json({ message: error });
     }
   }
 
+  // POST
+  // add a to do in db
+  static async addToDo(req, res) {
+    const { todotitle, todocategory } = req.body;
+    const active = true;
+
+    try {
+      const newToDo = await ToDoService.addToDo({
+        todotitle,
+        todocategory,
+        active,
+      });
+
+      res.status(201).json({
+        message: `To-do created! To-do name: ${newToDo.todotitle}`,
+        todo: newToDo,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "xereca" });
+    }
+  }
+
+  // PATCH
+  // updating the to do if its active(true) or not(false)
   static async updateToDo(req, res) {
     const id = req.params.id;
 
     const active = req.body.active;
 
-    const updatedToDo = {};
+    try {
+      const updatedToDo = await ToDoService.updateToDo(id, active);
 
-    // check if the id parameter from the URL is valid
-    if (!ObjectId.isValid(id)) {
-      res.status(404).json({ message: "id is not a valid hex" });
-      return;
+      if (!updatedToDo) {
+        res.status(404).json({ message: "There is no to-do with this id" });
+        return;
+      }
+
+      res.status(200).json({ message: updatedToDo });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    // check if todo exists by id
-    const todo = await ToDo.findOne({ _id: id });
-    if (!todo) {
-      res.status(404).json({ message: "there is no to-do with this id" });
-    }
-
-    // body validation
-    if (!active) {
-      res.status(422).json({ Message: "caiu no !active, " });
-      return;
-    } else {
-      updatedToDo.active = active;
-    }
-
-    await ToDo.findByIdAndUpdate(id, updatedToDo);
-
-    res.status(200).json({ message: "xereca" });
   }
 
+  // delete to do from db by the parameter id
   static async deleteToDo(req, res) {
     const id = req.params.id;
+    try {
+      await ToDoService.deleteToDo(id);
 
-    // check if the id parameter from the URL is valid
-    if (!ObjectId.isValid(id)) {
-      res.status(404).json({ message: "id is not a valid hex" });
-      return;
+      res.status(204);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    // check if todo exists by id
-    const todo = await ToDo.findOne({ _id: id });
-    if (!todo) {
-      res.status(404).json({ message: "there is no to-do with this id" });
-    }
-
-    
-    await ToDo.findByIdAndDelete(id);
-
-    res.status(200).json({message: "Todo removido do banco"})
-
-    return
   }
 };

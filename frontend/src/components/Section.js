@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Todo from "./ToDo";
 import "./Section.css";
 
@@ -30,7 +29,7 @@ const Section = ({
             <Todo
               deleteData={deleteData}
               updateData={updateData}
-              key={todo.todotitle}
+              key={todo._id}
               todo={todo}
             />
           ))}
