@@ -124,7 +124,7 @@ module.exports = class ToDoController {
 
     try {
       if (todo.user._id.toString() !== user._id.toString()) {
-        res.status(400).json({ message: "id podre" });
+        res.status(400).json({ message: "The todo.user.id is not the same as the user.id(token)" });
         return;
       }
 
