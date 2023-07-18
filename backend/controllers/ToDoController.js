@@ -1,18 +1,23 @@
-const ToDoService = require("../services/ToDoServices");
-
-// check id method import
-const { ObjectId } = require("mongodb");
-
-// models import
 const ToDo = require("../models/ToDo");
+const ToDoService = require("../services/ToDoServices");
+const getToken = require("../auth/get-token");
+const UserService = require("../services/UserServices");
 
 module.exports = class ToDoController {
   // GET
   // get all todos from db
-  static async getAllToDos(req, res) {
-    const alltodos = await ToDoService.getAllToDos();
 
-    res.status(200).json(alltodos);
+  static async getAllUserToDos(req, res) {
+    // get user from token
+    const token = getToken(req);
+    const user = await UserService.getUserByToken(token);
+
+    const allUserToDos = await ToDoService.getAllUserToDos(user._id);
+    // const pets = await Pet.find({ "user._id": user._id }).sort("-createdAt");
+
+    res.status(200).json({
+      Todos: allUserToDos,
+    });
   }
 
   // GET
@@ -40,11 +45,30 @@ module.exports = class ToDoController {
     const { todotitle, todocategory } = req.body;
     const active = true;
 
+    if (!todotitle) {
+      res.status(400).json({ message: "To do title is mandatory" });
+      return;
+    }
+    if (!todocategory) {
+      res.status(400).json({ message: "To do category is mandatory" });
+      return;
+    }
+
+    // get user token
+    const token = getToken(req);
+    // send the token to get the user
+    const user = await UserService.getUserByToken(token);
+
     try {
       const newToDo = await ToDoService.addToDo({
         todotitle,
         todocategory,
         active,
+        user: {
+          _id: user._id,
+          name: user.name,
+          image: user.image,
+        },
       });
 
       res.status(201).json({
@@ -52,7 +76,7 @@ module.exports = class ToDoController {
         todo: newToDo,
       });
     } catch (error) {
-      res.status(500).json({ message: "xereca" });
+      res.status(500).json({ message: error.message });
     }
   }
 
@@ -63,8 +87,20 @@ module.exports = class ToDoController {
 
     const active = req.body.active;
 
+    const todo = await ToDoService.getToDoById(id);
+
+    // get user token
+    const token = getToken(req);
+    // send the token to get the user
+    const user = await UserService.getUserByToken(token);
+
+    if (todo.user._id.toString() !== user._id.toString()) {
+      res.status(400).json({ message: "id podre" });
+      return;
+    }
+
     try {
-      const updatedToDo = await ToDoService.updateToDo(id, active);
+      const updatedToDo = await ToDoService.updateToDo(id);
 
       if (!updatedToDo) {
         res.status(404).json({ message: "There is no to-do with this id" });
@@ -77,13 +113,24 @@ module.exports = class ToDoController {
     }
   }
 
-  // delete to do from db by the parameter id
   static async deleteToDo(req, res) {
     const id = req.params.id;
-    try {
-      await ToDoService.deleteToDo(id);
 
-      res.status(204);
+    const todo = await ToDoService.getToDoById(id);
+
+    const token = getToken(req);
+
+    const user = await UserService.getUserByToken(token);
+
+    try {
+      if (todo.user._id.toString() !== user._id.toString()) {
+        res.status(400).json({ message: "id podre" });
+        return;
+      }
+
+      const deletedToDo = await ToDoService.deleteToDo(id);
+
+      return res.status(200).json({ message: "To-do removed", deletedToDo });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

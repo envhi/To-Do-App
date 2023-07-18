@@ -1,11 +1,12 @@
 const router = require('express').Router()
 
-const ToDoController = require("../controllers/ToDoController")
+const ToDoController = require("../controllers/ToDoController");
+const verifyJWT = require('../middlewares/VerifyJWT');
 
-router.get('/alltodos', ToDoController.getAllToDos)
-router.get('/:id', ToDoController.getToDoById)
-router.post('/add', ToDoController.addToDo);
-router.patch('/:id', ToDoController.updateToDo)
-router.delete('/:id', ToDoController.deleteToDo)
+router.get('/alltodos', verifyJWT,ToDoController.getAllUserToDos)
+router.get('/:id', verifyJWT, ToDoController.getToDoById)
+router.post('/add', verifyJWT ,ToDoController.addToDo);
+router.patch('/:id', verifyJWT, ToDoController.updateToDo)
+router.delete('/:id', verifyJWT, ToDoController.deleteToDo)
 
 module.exports = router;

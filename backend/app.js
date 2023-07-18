@@ -5,12 +5,19 @@ const port = 5000;
 
 app.use(express.json())
 
-const todoRoutes = require("./routes/todo");
 
 // Solve CORS
 app.use(cors({ credentials: true, origin: 'http://localhost:3000'}))
 
+// user router 
+const userRoutes = require("./routes/user")
+app.use("/users", userRoutes)
+
+// todo router
+const todoRoutes = require("./routes/todo");
 app.use("/todos", todoRoutes);
+
+
 
 app.listen(port, () => {
 

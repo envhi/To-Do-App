@@ -49,16 +49,20 @@ function App() {
       .catch((error) => console.error(error));
   }
 
-  function deleteData(todo) {
-    fetch(`http://localhost:5000/todos/${todo._id}`, {
+  function deleteData(todoid) {
+    fetch(`http://localhost:5000/todos/${todoid}`, {
       method: "DELETE",
     })
-      .then((res) => getData())
-      .catch((error) => console.error(error));
+    .then(response => response.json())
+    .then(data => {
+      getData()
+    })
+    .catch((error) => console.error(error));
   }
 
   useEffect(() => {
     // utilizando o hook useEffect para ativar a função getData
+    
     getData(); // argumento 1: a callback que será executada quando o evento for ativado
   }, []); // argumento2: o efeito: [] significa que o efeito não tem dependencias, ou seja, vai rodar só uma vez imediatamente após o
   // o componente ser montado

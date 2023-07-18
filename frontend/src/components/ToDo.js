@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styles from './ToDo.module.css'
 const Todo = ({ todo, updateData, deleteData }) => {
 
@@ -16,7 +15,7 @@ const Todo = ({ todo, updateData, deleteData }) => {
 
         <div className={styles.buttonscontainer}>
           { (todo.active === true ? <button onClick={() => updateData(todo)} className={styles.done}>Done</button> : '')}
-          <button onClick={() => deleteData(todo)} className={styles.x}>X</button>
+          <button onClick={() => deleteData(todo._id)} className={styles.x}>X</button>
         </div>
         
       </div>

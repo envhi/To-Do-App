@@ -2,8 +2,8 @@
 const ToDo = require("../models/ToDo");
 
 module.exports = class ToDoService {
-  static async getAllToDos() {
-    return await ToDo.find();
+  static async getAllUserToDos(id) {
+    return await ToDo.find({ "user._id": id });
   }
 
   static async getToDoById(id) {
@@ -20,22 +20,12 @@ module.exports = class ToDoService {
 
     const updatedToDo = {};
 
-    if (!todo) {
-      return;
-    } else {
-      updatedToDo.active = false;
-    }
+    updatedToDo.active = false;
 
     return await ToDo.findByIdAndUpdate(id, { $set: updatedToDo });
   }
 
   static async deleteToDo(id) {
-    const todo = await ToDo.findOne({ _id: id });
-
-    if (!todo) {
-      return;
-    } else {
-      return await ToDo.findByIdAndDelete(id);
-    }
+    return await ToDo.findByIdAndRemove(id);
   }
 };

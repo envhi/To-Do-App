@@ -17,6 +17,7 @@ const ToDo = mongoose.model(
       active: {
         type: Boolean,
       },
+      user: Object,
     },
     { timestamps: true }
   )
