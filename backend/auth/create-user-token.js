@@ -10,8 +10,9 @@ const createUserToken = async (user, req, res) => {
     // 2º parametro: secret
     "testsecret",
     // 3º parametro: expire time
-    { expiresIn: 300}
+    // { expiresIn: 300}
   );
+
 
     return await token;
 };

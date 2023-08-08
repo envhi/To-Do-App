@@ -1,14 +1,39 @@
 import Todo from "./ToDo";
 import "./Section.css";
+import api from "../utils/api";
 
 const Section = ({
   todos,
+  getUserToDos,
   sectionname,
   bgcolor,
-  updateData,
-  deleteData,
   search,
 }) => {
+  
+
+  async function updateData(todo) {
+    const data = await api
+      .patch(`/todos/${todo._id}`)
+      .then((response) => {
+        getUserToDos()
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  async function deleteData(todoid) {
+    const data = await api
+      .delete(`/todos/${todoid}`)
+      .then((response) => {
+        getUserToDos()
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
 
   return (

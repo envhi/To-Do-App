@@ -2,10 +2,16 @@
 const ToDo = require("../models/ToDo");
 
 module.exports = class ToDoService {
-  static async getAllUserToDos(id) {
-    return await ToDo.find({ "user._id": id });
+
+  static async getAllToDos() {
+    return await ToDo.find();
   }
 
+  static async getAllUserToDos(user) {
+    const userTodos = await ToDo.find({ 'user._id': user._id });
+    return await userTodos
+  }
+  
   static async getToDoById(id) {
     return await ToDo.findOne({ _id: id });
   }

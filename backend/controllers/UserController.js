@@ -1,11 +1,30 @@
 const UserServices = require("../services/UserServices");
+const ToDoServices = require("../services/ToDoServices")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const createUserToken = require("../auth/create-user-token");
 const getToken = require("../auth/get-token");
-const User = require("../models/User");
+const UserService = require("../services/UserServices");
 
 module.exports = class UserController {
+
+  static async getAllUserToDos(req, res) {
+    // get user token
+    const token = await getToken(req);
+    // send the token to get the user
+    const user = await UserService.getUserByToken(token);
+
+    try {
+      const allUserToDos = await ToDoServices.getAllUserToDos(user);
+
+      res.status(200).json({allUserToDos});
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+
+  }
+
+
   static async addNewUser(req, res) {
     const { name, email, password } = req.body;
 
@@ -46,9 +65,12 @@ module.exports = class UserController {
         image: "test",
       });
 
+      const token = await createUserToken(newUser, req, res);
+
       res.status(200).json({
         message: "New user registered!",
         newUser,
+        token,
       });
     } catch (error) {
       res.status(500).json({
@@ -65,21 +87,21 @@ module.exports = class UserController {
       return;
     }
 
-    const id = req.params.id; 
+    const id = req.params.id;
 
     try {
       const user = await UserServices.findUserById(id);
 
       if (!user) {
         res.status(500).json({
-          message: 'User not found'
+          message: "User not found",
         });
       }
 
       res.status(200).json({
-        message: 'User found!',
-        user: user
-      })
+        message: "User found!",
+        user: user,
+      });
     } catch (error) {
       res.status(500).json({
         error: error.message,
@@ -130,7 +152,7 @@ module.exports = class UserController {
   }
 
   static async editUserEmail(req, res) {
-    const token = getToken(req);
+    const token = await getToken(req);
 
     const user = await UserServices.getUserByToken(token);
 
@@ -166,13 +188,13 @@ module.exports = class UserController {
   }
 
   static async deleteUser(req, res) {
-    const token = getToken(req)
+    const token = await getToken(req);
 
     const user = await UserServices.getUserByToken(token);
 
-    const deletedUser = await UserServices.deleteUser(user.id)
+    const deletedUser = await UserServices.deleteUser(user.id);
 
-    res.status(200).json({deletedUser})
-
+    res.status(200).json({ deletedUser });
   }
+
 };

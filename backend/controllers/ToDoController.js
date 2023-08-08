@@ -1,23 +1,36 @@
-const ToDo = require("../models/ToDo");
 const ToDoService = require("../services/ToDoServices");
+const UserService = require("../services/UserServices")
 const getToken = require("../auth/get-token");
-const UserService = require("../services/UserServices");
 
 module.exports = class ToDoController {
   // GET
   // get all todos from db
 
+  static async getAllToDos(req, res) {
+    const alltodos = await ToDoService.getAllToDos();
+
+    res.status(200).json(alltodos);
+  }
+  
   static async getAllUserToDos(req, res) {
-    // get user from token
+    // get user token
     const token = getToken(req);
+    // send the token to get the user
     const user = await UserService.getUserByToken(token);
 
-    const allUserToDos = await ToDoService.getAllUserToDos(user._id);
-    // const pets = await Pet.find({ "user._id": user._id }).sort("-createdAt");
+    try {
+      const allUserToDos = await ToDoService.getAllUserToDos(user);
 
-    res.status(200).json({
-      Todos: allUserToDos,
-    });
+      if (!allUserToDos) {
+        res.status(404).json({ message: "There is no to-dos for this user" });
+        return;
+      }
+
+      res.status(200).json({ message: allUserToDos, token: token });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+
   }
 
   // GET
@@ -54,10 +67,12 @@ module.exports = class ToDoController {
       return;
     }
 
+
     // get user token
     const token = getToken(req);
     // send the token to get the user
     const user = await UserService.getUserByToken(token);
+
 
     try {
       const newToDo = await ToDoService.addToDo({
@@ -94,6 +109,7 @@ module.exports = class ToDoController {
     // send the token to get the user
     const user = await UserService.getUserByToken(token);
 
+
     if (todo.user._id.toString() !== user._id.toString()) {
       res.status(400).json({ message: "id podre" });
       return;
@@ -124,7 +140,11 @@ module.exports = class ToDoController {
 
     try {
       if (todo.user._id.toString() !== user._id.toString()) {
-        res.status(400).json({ message: "The todo.user.id is not the same as the user.id(token)" });
+        res
+          .status(400)
+          .json({
+            message: "The todo.user.id is not the same as the user.id(token)",
+          });
         return;
       }
 
