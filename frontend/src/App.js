@@ -14,6 +14,7 @@ import Home from "./components/pages/Home";
 
 // Context
 import { UserProvider } from "./context/UserContext";
+import MyToDos from "./components/pages/User/MyToDos";
 import Profile from "./components/pages/User/Profile";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/" element={<Home/>}/>
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/user/mytodos" element={<MyToDos/>}/>
               <Route path="/user/profile" element={<Profile/>}/>
               
             </Routes>

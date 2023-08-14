@@ -1,21 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./ToDoForm.css";
 import api from "../utils/api";
 import useFlashMessage from "../hooks/useFlashMessage";
 
 const ToDoForm = ({ closeModal, getUserToDos }) => {
-
-  // const [token] = useState(localStorage.getItem("token") || "");
-  // console.log(token, "console log todo form token");
-
   const [todotitle, setTodotitle] = useState("");
   const [todocategory, setTodocategory] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     addToDo(todotitle, todocategory);
-    getUserToDos()
-
+    getUserToDos();
   };
 
   async function addToDo(todotitle, todocategory) {
@@ -30,7 +25,7 @@ const ToDoForm = ({ closeModal, getUserToDos }) => {
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error("Error on creating this to-do:" + error.message);
       });
   }
 

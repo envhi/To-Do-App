@@ -8,6 +8,15 @@ const UserService = require("../services/UserServices");
 
 module.exports = class UserController {
 
+  static async getUserInfo(req, res) {
+    const token = await getToken(req)
+
+    const user = await UserService.getUserByToken(token)
+
+    res.status(200).json({user: user})
+  }
+
+
   static async getAllUserToDos(req, res) {
     // get user token
     const token = await getToken(req);

@@ -18,7 +18,6 @@ import { useNavigate } from "react-router-dom";
 import useFlashMessage from "./useFlashMessage";
 
 export default function useAuth() {
-
   const [authenticated, setAuthenticated] = useState(null);
 
   const { setFlashMessage } = useFlashMessage();
@@ -58,10 +57,9 @@ export default function useAuth() {
   async function authUser(data) {
     localStorage.setItem("token", JSON.stringify(data.token));
 
-    navigate("/user/profile");
+    navigate("/user/mytodos");
 
     setAuthenticated(true);
-
   }
 
   async function login(user) {
@@ -95,5 +93,5 @@ export default function useAuth() {
 
   // O custom hook useAuth é definido ccomo uma função que retorna algumas funcionalidades de autenticação,
   // como authenticated (estado de autenticação do usuário) e register (função para registrar um novo usuário).
-  return { authenticated, register, login, logout  };
+  return { authenticated, register, login, logout };
 }

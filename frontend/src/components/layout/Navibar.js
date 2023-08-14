@@ -16,8 +16,12 @@ function Navibar() {
             <Link to="/">Home</Link>
           </li>
           {authenticated ? (
-            <><li>
+            <>
+            <li>
               <Link to={"/user/profile"}>Profile</Link>
+            </li>
+            <li>
+              <Link to={"/user/mytodos"}>My To Dos</Link>
             </li>
             <li onClick={logout}>Logout</li>
             </>

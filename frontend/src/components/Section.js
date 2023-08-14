@@ -2,24 +2,16 @@ import Todo from "./ToDo";
 import "./Section.css";
 import api from "../utils/api";
 
-const Section = ({
-  todos,
-  getUserToDos,
-  sectionname,
-  bgcolor,
-  search,
-}) => {
-  
-
+const Section = ({ todos, getUserToDos, sectionname, bgcolor, search }) => {
   async function updateData(todo) {
     const data = await api
       .patch(`/todos/${todo._id}`)
       .then((response) => {
-        getUserToDos()
+        getUserToDos();
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error("Error on updating this to-do:" + error.message);
       });
   }
 
@@ -27,17 +19,15 @@ const Section = ({
     const data = await api
       .delete(`/todos/${todoid}`)
       .then((response) => {
-        getUserToDos()
+        getUserToDos();
         return response.data;
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error("Error on deleting this to-do:" + error.message);
       });
   }
 
-
-  return (
-    (todos.length > 0) ?
+  return todos.length > 0 ? (
     <div className="container">
       <div style={{ backgroundColor: bgcolor }} className="sectioncontainer">
         <h1>{sectionname}</h1>
@@ -59,7 +49,9 @@ const Section = ({
             />
           ))}
       </div>
-    </div> : ''
+    </div>
+  ) : (
+    ""
   );
 };
 

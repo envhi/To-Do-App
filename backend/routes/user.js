@@ -6,7 +6,7 @@ const UserController = require("../controllers/UserController");
 // mid
 const verifyJWT = require('../middlewares/VerifyJWT')
 
-// router.get("/:id", UserController.findUserById)
+router.get("/profile", verifyJWT, UserController.getUserInfo)
 router.get("/allusertodos", verifyJWT, UserController.getAllUserToDos)
 router.post("/add", UserController.addNewUser);
 router.post("/login", UserController.logIn);

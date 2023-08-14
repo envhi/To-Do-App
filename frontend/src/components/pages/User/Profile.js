@@ -1,106 +1,43 @@
-import { useContext, useEffect, useState } from "react";
-import ToDoForm from "../../ToDoForm";
-import SearchBar from "../../SearchBar";
-import Modal from "react-modal";
-import Section from "../../Section";
+import React, { useEffect, useState } from "react";
 import api from "../../../utils/api";
-import { Context } from "../../../context/UserContext";
 
-function Profile() {
-  const { authenticated } = useContext(Context);
+const Profile = () => {
   const [token] = useState(localStorage.getItem("token") || "");
-  const [todos, setTodos] = useState([]);
+  const [user, setUser] = useState({});
 
-  function getUserToDos() {
-    api
-      .get("/users/allusertodos")
-      .then((response) => {
-        console.log(response)
-        setTodos(response.data.allUserToDos);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  }
-
-  // function getUserToDos() {
   useEffect(() => {
     api
-      .get("/users/allusertodos", {
+      .get("/users/profile", {
         headers: {
           Authorization: `Bearer ${JSON.parse(token)}`,
         },
       })
       .then((response) => {
-        setTodos(response.data.allUserToDos);
+        setUser(response.data.user);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }, [token]);
-  // }
-
-  const [search, setSearch] = useState("");
-
-  // TEST MODAL
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  Modal.setAppElement("#root");
-
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const sections = [
-    {
-      sectionname: "In progress tasks",
-      bgcolor: "#rgb(255, 249, 167)",
-      active: true,
-    },
-    {
-      sectionname: "Completed tasks",
-      bgcolor: "#b9ff73",
-      active: false,
-    },
-  ];
 
   return (
-    <div className="container">
-      <h1 className="mainh1">To Do App</h1>
-      <button className="modal-open-button" onClick={openModal}>
-        Click Here to create a new To Do!
-      </button>
-      <Modal
-        className="modal"
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Form"
-      >
-        <ToDoForm
-          getUserToDos={getUserToDos}
-          closeModal={closeModal}
-        />
-      </Modal>
-      <SearchBar search={search} setSearch={setSearch} />
-
-      {sections.map((section) => (
-        <Section
-          getUserToDos={getUserToDos}
-          key={section.sectionname}
-          sectionname={section.sectionname}
-          bgcolor={section.bgcolor}
-          search={search}
-          todos={todos.filter((todo) => todo.active === section.active)}
-          // getUserToDos={getUserToDos}
-        />
-      ))}
+    <div className="form-container">
+      <h1>My Profile</h1>
+      <form>
+        <div className="title-container">
+          <label>Name</label>
+          <p>{user.name}</p>
+        </div>
+        <div className="title-container">
+          <label>E-mail</label>
+          <p>{user.email}</p>
+        </div>
+        <div className="button-container">
+          <button type="submit">Update Email</button>
+        </div>
+      </form>
     </div>
   );
-}
+};
 
 export default Profile;
