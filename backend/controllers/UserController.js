@@ -33,6 +33,24 @@ module.exports = class UserController {
 
   }
 
+  static async getAllUserDoneToDos(req, res) {
+    // get user token
+    const token = await getToken(req);
+    // send the token to get the user
+    const user = await UserService.getUserByToken(token);
+
+    try {
+      const allUserToDos = await ToDoServices.getAllUserToDos(user);
+
+      const allUserDoneToDos = allUserToDos.filter((todo) => todo.createdAt.toString() != todo.updatedAt.toString())
+
+      res.status(200).json({allUserDoneToDos});
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+
+  }
+
 
   static async addNewUser(req, res) {
     const { name, email, password } = req.body;

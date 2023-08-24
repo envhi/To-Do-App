@@ -1,11 +1,5 @@
 function Home() {
-    return (
-        <section>
-            <h1>
-                Home
-            </h1>
-        </section>
-    )
+  return <h1>homw</h1>;
 }
 
-export default Home
+export default Home;

@@ -16,23 +16,28 @@ import Home from "./components/pages/Home";
 import { UserProvider } from "./context/UserContext";
 import MyToDos from "./components/pages/User/MyToDos";
 import Profile from "./components/pages/User/Profile";
+import MyCompletedToDos from "./components/pages/User/MyCompletedToDos";
+import { Button } from "react-bootstrap";
 
 function App() {
   return (
     <div className="container">
       <Router>
         {/* envolvendo todos os componentes com o provider, para todos os componentes conseguirem acessar o contexto do usuário (se está logado ou não) */}
-        <UserProvider> 
+        <UserProvider>
           <Navibar />
-          <Message/>
+          <Message />
           <Container>
             <Routes>
-              <Route path="/" element={<Home/>}/>
+              <Route path="/" element={<Home />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/user/mytodos" element={<MyToDos/>}/>
-              <Route path="/user/profile" element={<Profile/>}/>
-              
+              <Route path="/user/mytodos" element={<MyToDos />} />
+              <Route path="/user/profile" element={<Profile />} />
+              <Route
+                path="/user/alluserdonetodos"
+                element={<MyCompletedToDos />}
+              />
             </Routes>
           </Container>
           <Footer />

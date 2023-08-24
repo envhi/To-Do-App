@@ -14,6 +14,14 @@ const ToDo = mongoose.model(
         type: String,
         required: true,
       },
+      tododescription: {
+        type: String,
+        required: false,
+      },
+      tododate: {
+        type: String,
+        required: true,
+      },
       active: {
         type: Boolean,
       },

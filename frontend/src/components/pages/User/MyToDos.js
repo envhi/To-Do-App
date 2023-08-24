@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import Section from "../../Section";
 import api from "../../../utils/api";
 import { Context } from "../../../context/UserContext";
+import ToDoFormCheckBoxes from "../../ToDoFormCheckBoxes";
 
 function MyToDos() {
   const { authenticated } = useContext(Context);
@@ -40,17 +41,26 @@ function MyToDos() {
 
   const [search, setSearch] = useState("");
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [descriptiveModalIsOpen, setDescriptiveModalIsOpen] = useState(false);
+  // const [checkBoxesModalIsOpen, setcheckBoxesModalIsOpenn] = useState(false);
 
   Modal.setAppElement("#root");
 
-  const openModal = () => {
-    setModalIsOpen(true);
+  const openDescriptiveModal = () => {
+    setDescriptiveModalIsOpen(true);
   };
 
-  const closeModal = () => {
-    setModalIsOpen(false);
+  const closeDescriptiveModal = () => {
+    setDescriptiveModalIsOpen(false);
   };
+
+  // const openCheckBoxesModal = () => {
+  //   setcheckBoxesModalIsOpenn(true);
+  // };
+
+  // const closeCheckBoxesModal = () => {
+  //   setcheckBoxesModalIsOpenn(false);
+  // };
 
   const sections = [
     {
@@ -67,18 +77,32 @@ function MyToDos() {
 
   return (
     <div className="container">
-      <h1 className="mainh1">To Do App</h1>
-      <button className="modal-open-button" onClick={openModal}>
-        Click Here to create a new To Do!
+      <h1 className="mainh1">Create your tasks!</h1>
+      <button className="modal-open-button" onClick={openDescriptiveModal}>
+        Descriptive Task
       </button>
+      {/* <button className="modal-open-button" onClick={openCheckBoxesModal}>
+        Step by step Task
+      </button> */}
       <Modal
         className="modal"
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={descriptiveModalIsOpen}
+        onRequestClose={closeDescriptiveModal}
         contentLabel="Form"
       >
-        <ToDoForm getUserToDos={getUserToDos} closeModal={closeModal} />
+        <ToDoForm getUserToDos={getUserToDos} closeDescriptiveModal={closeDescriptiveModal} />
       </Modal>
+
+      {/* <Modal
+        className="modal"
+        isOpen={checkBoxesModalIsOpen}
+        onRequestClose={closeCheckBoxesModal}
+        contentLabel="Form"
+      >
+        <ToDoFormCheckBoxes getUserToDos={getUserToDos} closeDescriptiveModal={closeCheckBoxesModal} />
+      </Modal> */}
+
+
       <SearchBar search={search} setSearch={setSearch} />
 
       {sections.map((section) => (

@@ -55,7 +55,7 @@ module.exports = class ToDoController {
   // POST
   // add a to do in db
   static async addToDo(req, res) {
-    const { todotitle, todocategory } = req.body;
+    const { todotitle, todocategory, tododescription, tododate } = req.body;
     const active = true;
 
     if (!todotitle) {
@@ -64,6 +64,14 @@ module.exports = class ToDoController {
     }
     if (!todocategory) {
       res.status(400).json({ message: "To do category is mandatory" });
+      return;
+    }
+    if (!tododescription){
+      res.status(400).json({ message: "To do description is mandatory" });
+      return;
+    }
+    if (!tododate){
+      res.status(400).json({ message: "To do date is mandatory" });
       return;
     }
 
@@ -79,6 +87,8 @@ module.exports = class ToDoController {
         todotitle,
         todocategory,
         active,
+        tododescription,
+        tododate,
         user: {
           _id: user._id,
           name: user.name,
