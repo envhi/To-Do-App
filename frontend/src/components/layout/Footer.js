@@ -1,11 +1,9 @@
 function Footer() {
-    return (
-        <section>
-            <h1>
-                Footer
-            </h1>
-        </section>
-    )
+  return (
+    <section>
+      <h1>xereca</h1>
+    </section>
+  );
 }
 
-export default Footer
+export default Footer;

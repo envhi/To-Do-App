@@ -3,7 +3,7 @@ import "./ToDoForm.css";
 import api from "../utils/api";
 import useFlashMessage from "../hooks/useFlashMessage";
 
-const ToDoForm = ({ closeDescriptiveModal, getUserToDos }) => {
+const ToDoForm = ({ closeModal, getUserToDos }) => {
   const [todotitle, setTodotitle] = useState("");
   const [todocategory, setTodocategory] = useState("");
   const [tododescription, setTodoDescription] = useState("");
@@ -20,7 +20,7 @@ const ToDoForm = ({ closeDescriptiveModal, getUserToDos }) => {
       todotitle,
       todocategory,
       tododescription,
-      tododate
+      tododate,
     };
 
     const data = await api
@@ -35,7 +35,7 @@ const ToDoForm = ({ closeDescriptiveModal, getUserToDos }) => {
 
   return (
     <div className="form-container">
-      <h1>descriptive todo ----------</h1>
+      <h1>Create your task!</h1>
       <form onSubmit={handleSubmit}>
         <div className="title-container">
           <label>To do title </label>
@@ -64,21 +64,18 @@ const ToDoForm = ({ closeDescriptiveModal, getUserToDos }) => {
           </select>
         </div>
         <div className="description-container">
+          <label>Description</label>
           <input
             name="tododescription"
             required={true}
             value={tododescription}
             placeholder="Enter a description for your task"
-            type="text"
+            type="textbox"
             onChange={(event) => setTodoDescription(event.target.value)}
           />
         </div>
 
         <div className="title-container">
-          <br />
-          <br />
-          <br />
-          <br />
           <label>Deadline</label>
           <input
             type="date"
@@ -90,10 +87,10 @@ const ToDoForm = ({ closeDescriptiveModal, getUserToDos }) => {
         </div>
 
         <div className="button-container">
-          <button type="submit">Create To Do</button>
+          <button type="submit">Create</button>
         </div>
-        <button className="modal-close-button" onClick={closeDescriptiveModal}>
-          Fechar
+        <button className="modal-close-button" onClick={closeModal}>
+          Close
         </button>
       </form>
     </div>

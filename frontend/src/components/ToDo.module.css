@@ -3,8 +3,8 @@
   background-color: rgb(255, 255, 255);
   border-radius: 0px 0px 8px 8px;
   box-shadow: 4px 2px 2px 1px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  height: 240px;
+  width: 250px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -30,12 +30,11 @@
   align-items: center;
   width: fit-content;
   height: 14px;
-
 }
 
 .categorycontainer p {
   font-weight: 300;
-  color:rgb(100, 92, 0);
+  color: rgb(100, 92, 0);
 }
 
 .buttonscontainer {
@@ -53,7 +52,7 @@
   border: none;
   font-weight: bold;
   cursor: pointer;
-  color: white;    
+  color: white;
   padding: 5px;
 }
 
@@ -65,5 +64,4 @@
 .x {
   background-color: #bf0000;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
-  
 }
