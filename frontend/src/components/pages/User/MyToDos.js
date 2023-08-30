@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import Section from "../../Section";
 import api from "../../../utils/api";
 import { Context } from "../../../context/UserContext";
+import "./MyToDos.css";
 
 function MyToDos() {
   const { authenticated } = useContext(Context);
@@ -67,7 +68,6 @@ function MyToDos() {
 
   return (
     <div className="container">
-      <h1 className="mainh1">To Do App</h1>
       <button className="modal-open-button" onClick={openModal}>
         Click Here to create a new To Do!
       </button>

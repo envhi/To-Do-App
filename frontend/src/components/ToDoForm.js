@@ -34,11 +34,11 @@ const ToDoForm = ({ closeModal, getUserToDos }) => {
   }
 
   return (
-    <div className="form-container">
+    <div className="form-todo-container">
       <h1>Create your task!</h1>
       <form onSubmit={handleSubmit}>
         <div className="title-container">
-          <label>To do title </label>
+          <label>Title </label>
           <input
             name="todotitle"
             required={true}
@@ -48,7 +48,7 @@ const ToDoForm = ({ closeModal, getUserToDos }) => {
           />
         </div>
         <div className="category-container">
-          <label>To do category </label>
+          <label>Category</label>
           <select
             name={todocategory}
             className="select-container"
@@ -75,7 +75,7 @@ const ToDoForm = ({ closeModal, getUserToDos }) => {
           />
         </div>
 
-        <div className="title-container">
+        <div className="deadline-container">
           <label>Deadline</label>
           <input
             type="date"
@@ -89,9 +89,9 @@ const ToDoForm = ({ closeModal, getUserToDos }) => {
         <div className="button-container">
           <button type="submit">Create</button>
         </div>
-        <button className="modal-close-button" onClick={closeModal}>
-          Close
-        </button>
+        <div className="modal-close-button-container">
+          <button onClick={closeModal}>Cancel</button>
+        </div>
       </form>
     </div>
   );

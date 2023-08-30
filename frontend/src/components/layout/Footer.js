@@ -1,7 +1,9 @@
+import "./Footer.css";
+
 function Footer() {
   return (
-    <section>
-      <h1>xereca</h1>
+    <section className="footer-container">
+      <h1> &copy;</h1>
     </section>
   );
 }

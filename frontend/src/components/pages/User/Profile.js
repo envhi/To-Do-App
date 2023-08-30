@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../../../utils/api";
+import "./Profile.css";
 
 const Profile = () => {
   const [token] = useState(localStorage.getItem("token") || "");
@@ -21,19 +22,16 @@ const Profile = () => {
   }, [token]);
 
   return (
-    <div className="form-container">
+    <div className="profile-container">
       <h1>My Profile</h1>
       <form>
-        <div className="title-container">
+        <div className="name-container">
           <label>Name</label>
           <p>{user.name}</p>
         </div>
-        <div className="title-container">
+        <div className="email-container">
           <label>E-mail</label>
           <p>{user.email}</p>
-        </div>
-        <div className="button-container">
-          <button type="submit">Update Email</button>
         </div>
       </form>
     </div>

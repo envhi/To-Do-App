@@ -8,19 +8,19 @@ import { Context } from "../../../context/UserContext";
 function Register() {
   const [user, setUser] = useState({});
 
-  const {register} = useContext(Context)
+  const { register } = useContext(Context);
 
   function handleChange(event) {
-    setUser({...user, [event.target.name]: event.target.value})
+    setUser({ ...user, [event.target.name]: event.target.value });
   }
 
   function handleSubmit(event) {
-    event.preventDefault()
-    register(user)
+    event.preventDefault();
+    register(user);
   }
 
   return (
-    <div className="form-container">
+    <div className="form-register-container">
       <h1>Create your account!</h1>
       <form onSubmit={handleSubmit}>
         <div className="name-container">
@@ -29,7 +29,6 @@ function Register() {
             type="text"
             required={true}
             name="name"
-
             placeholder="Enter your name"
             onChange={handleChange}
           />
@@ -41,7 +40,6 @@ function Register() {
             type="email"
             required={true}
             name="email"
-
             placeholder="Enter your e-mail"
             onChange={handleChange}
           />
